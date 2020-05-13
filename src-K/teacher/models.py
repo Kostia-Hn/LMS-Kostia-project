@@ -12,7 +12,7 @@ class Teacher(models.Model):
     Teacher_birthday = models.DateField(default=datetime.datetime.now().date())
 
     def __str__(self):
-        return f'{self.Teacher_first_name}, {self.Teacher_second_name}, {self.Teacher_birthday}'
+        return f'{self.id}, {self.Teacher_first_name}, {self.Teacher_second_name}, {self.Teacher_birthday}'
 
     @classmethod
     def generate_teacher(cls):
@@ -22,9 +22,4 @@ class Teacher(models.Model):
         return teacher
 
 
-class Groups(models.Model):
-    Group_name = models.CharField(max_length=40, null=False)
-    Group_specializatin = models.CharField(max_length=10, null=True)
-    Group_size = models.IntegerField(max_length=3, default=0)
-    Group_creation_date = models.DateField(default=datetime.datetime.now().date())
 
