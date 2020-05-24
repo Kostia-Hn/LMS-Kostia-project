@@ -3,7 +3,6 @@ import datetime
 import random
 
 # Create your models here.
-from faker import Faker
 
 IT_list = ['Python', 'Java', 'JS', 'SQL', 'C++', 'C#']
 
@@ -17,8 +16,6 @@ class Groups(models.Model):
 
     @classmethod
     def generate_group(cls):
-        faker=Faker()
-        grp = cls(Group_specialization = IT_list[random.randrange(0,5,1)], Group_size = random.randrange(15,25,1))
+        grp = cls(Group_specialization=IT_list[random.randrange(0, 5, 1)], Group_size=random.randrange(15, 25, 1))
         grp.save()
         return grp
-

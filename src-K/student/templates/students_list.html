@@ -1,22 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Students list</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-<form>
-  <label for="fname">First name:</label><br>
-  <input type="text" id="fname" name="fname"><br>
-  <label for="lname">Last name:</label><br>
-  <input type="text" id="lname" name="lname"><br>
-  <label for="tname">e-mail:</label><br>
-  <input type="text" id="tname" name="tname"><br>
-    <button type="submit">Search</button>
-</form>
+{% block content %}
 
-{{students_list|safe}}
+    <form>
+      <label for="fname">First name:</label><br>
+      <input type="text" id="fname" name="fname"><br>
+      <label for="lname">Last name:</label><br>
+      <input type="text" id="lname" name="lname"><br>
+      <label for="tname">e-mail:</label><br>
+      <input type="text" id="tname" name="tname"><br>
+        <button type="submit">Search</button>
+    </form>
 
-</body>
-</html>
+    {% for Student in students_list %}
+        {{Student.id}}
+        <a href="/students/edit/{{Student.id}}">{{Student.Student_first_name}} {{Student.Student_second_name}}</a>
+        {{Student.Student_email}}
+        {{Student.Student_birthday}}
+        {{Student.Student_phone_number}}
+        <br>
+    {%empty%}
+       <p>Sorry, list is empty</p>
+    {% endfor%}
+
+{% endblock%}
+

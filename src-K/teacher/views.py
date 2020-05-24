@@ -1,16 +1,17 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.urls import reverse
 
-from teacher.forms import TeacherAddForm
+from teacher.forms import TeacherAddForm, TeacherEditForm
 from teacher.models import Teacher
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 
 
 # Create your views here.
 
 def generate_teachers(request):
     amount = int(request.GET['amount'])
-    lst=[]
+    lst = []
     if amount > 200:
         amount = 5
     for _ in range(amount):
@@ -21,17 +22,17 @@ def generate_teachers(request):
 
 def teachers_list(request):
 
-    qs=Teacher.objects.all()
+    qs = Teacher.objects.all()
 
     if request.GET.get('fname'):
-        qs=qs.filter(Teacher_first_name=request.GET.get('fname'))
+        qs = qs.filter(Teacher_first_name=request.GET.get('fname'))
 
     if request.GET.get('lname'):
-        qs=qs.filter(Teacher_second_name=request.GET.get('lname'))
+        qs = qs.filter(Teacher_second_name=request.GET.get('lname'))
 
-    result = '<br>'.join(str(Teacher) for Teacher in qs)
-
-    return render(request=request, template_name='teachers_list.html', context={'teachers_list': result})
+    return render(request=request,
+                  template_name='teachers_list.html',
+                  context={'teachers_list': qs})
 
 def teachers_add(request):
 
@@ -44,3 +45,24 @@ def teachers_add(request):
         form = TeacherAddForm()
 
     return render(request=request, template_name='teachers_add.html', context={'form': form})
+
+def teachers_edit(request, id):
+    try:
+        teacher = Teacher.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound(f'Teacher with id={id} not found, sorry')
+
+    if request.method == 'POST':
+        form = TeacherEditForm(request.POST, instance=teacher)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('teachers'))
+    else:
+        form = TeacherEditForm(
+            instance=teacher
+        )
+
+    return render(request=request,
+                  template_name='teachers_edit.html',
+                  context={'form': form,
+                  'title': 'Teacher_edit'})
