@@ -13,10 +13,7 @@ class Command(BaseCommand):
             a = Teacher.generate_teacher()
             lst.append(a)
         for teach in lst:
-            print (teach.Teacher_first_name, " ", teach.Teacher_second_name)
-
-
-
+            print(teach.Teacher_first_name, " ", teach.Teacher_second_name)
 
     def add_arguments(self, parser):
-        parser.add_argument(nargs='+',type=int,dest = 'args')
+        parser.add_argument(nargs='+', type=int, dest='args')
