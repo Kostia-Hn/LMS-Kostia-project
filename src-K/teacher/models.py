@@ -4,8 +4,6 @@ import random
 # Create your models here.
 from faker import Faker
 
-from Group.models import Groups
-
 
 class Teacher(models.Model):
     Teacher_first_name = models.CharField(max_length=40, null=False)
@@ -13,7 +11,6 @@ class Teacher(models.Model):
     Teacher_email = models.CharField(max_length=20, null=True)
     Teacher_birthday = models.DateField(default=datetime.datetime.now().date())
     Teacher_phone_number = models.CharField(max_length=16, null=True)
-    Teacher_group = models.ForeignKey(to=Groups, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.id},' \
@@ -25,11 +22,14 @@ class Teacher(models.Model):
 
 
     @classmethod
-    def generate_teacher(cls):
+    def generate_teacher(cls, group=None):
         a = '+'
         for _ in range(10):
             a += str(random.randrange(0, 9, 1))
         faker = Faker()
+        # if group is None:
+        #     group = list(Groups.objects.all())
+
         teacher = cls(Teacher_first_name=faker.first_name(),
                       Teacher_second_name=faker.last_name(),
                       Teacher_email=faker.email(),

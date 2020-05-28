@@ -1,0 +1,29 @@
+
+{% if groups_list %}
+    <table border="1px">
+        <tr>
+          <th>ID</th>
+          <th>Specialization</th>
+          <th>Size</th>
+          <th>Classroom</th>
+          <th>Teacher</th>
+
+
+          <th>🖉</th>
+        </tr>
+        {% for Groups in groups_list %}
+            <tr>
+              <td> {{ Groups.id }}</td>
+              <td> {{ Groups.Group_specialization }}</td>
+              <td> {{ Groups.Group_size }}</td>
+              <td> {{ Groups.classroom }}</td>
+              <td> {{ Groups.Group_teacher }}</td>
+
+              <td> <a href="/groups/edit/{{ Groups.id }}">EDIT</a></td>
+
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>Sorry, list is empty</p>
+{% endif %}

@@ -7,14 +7,6 @@
         <button type="submit">Search</button>
     </form>
 
-    {% for Groups in groups_list %}
-        {{Groups.id}}
-        <a href="/groups/edit/{{Groups.id}}">{{Groups.Group_specialization}} </a>
-        {{Groups.Group_size}}
-        {{Groups.Group_creation_date}}
-        <br>
-    {%empty%}
-       <p>Sorry, list is empty</p>
-    {% endfor%}
+    {% include 'groups_includes/groups_table.html' %}
 
 {% endblock %}
