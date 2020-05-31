@@ -65,4 +65,5 @@ def teachers_edit(request, id):
     return render(request=request,
                   template_name='teachers_edit.html',
                   context={'form': form,
-                  'title': 'Teacher_edit'})
+                  'title': 'Teacher_edit',
+                  'teachers': teacher})

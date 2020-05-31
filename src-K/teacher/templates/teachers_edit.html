@@ -7,4 +7,9 @@
 
     <button type="submit">Save</button>
     </form>
+
+    {% with groups_list=teachers.groups.all %}
+        {% include 'groups_includes/groups_table.html' %}
+    {% endwith %}
+
 {%endblock%}

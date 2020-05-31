@@ -13,7 +13,10 @@ class Student(models.Model):
     Student_email = models.EmailField(max_length=20, null=True)
     Student_birthday = models.DateField(default=datetime.date.today)
     Student_phone_number = models.CharField(max_length=16, null=True)
-    Student_group = models.ForeignKey(to=Groups, null=True, on_delete=models.SET_NULL)
+    Student_group = models.ForeignKey(to=Groups,
+                                      null=True,
+                                      on_delete=models.SET_NULL,
+                                      related_name='students')
 
     def __str__(self):
         return f'{self.id},' \
@@ -24,14 +27,18 @@ class Student(models.Model):
             f' {self.Student_phone_number}'
 
     @classmethod
-    def generate_student(cls):
+    def generate_student(cls, group=None):
         a = '+'
+        if group is None:
+            group = list(Groups.objects.all())
+
         for _ in range(10):
             a += str(random.randrange(0, 9, 1))
         faker = Faker()
         student = cls(Student_first_name=faker.first_name(),
                       Student_second_name=faker.last_name(),
                       Student_email=faker.email(),
-                      Student_phone_number=a)
+                      Student_phone_number=a,
+                      Student_group=random.choice(group))
         student.save()
         return student
