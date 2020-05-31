@@ -10,6 +10,8 @@
 
 
           <th>🖉</th>
+          <th>🗑</th>
+
         </tr>
         {% for Student in students_list %}
             <tr>
@@ -20,6 +22,7 @@
               <td> {{ Student.Student_group }}</td>
 
               <td> <a href="/students/edit/{{ Student.id }}">EDIT</a></td>
+              <td> <a href="/students/delete/{{ Student.id }}">DELETE</a></td>
 
             </tr>
         {% endfor %}
