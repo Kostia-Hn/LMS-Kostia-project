@@ -1,11 +1,9 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
+from django.http import HttpResponse
 from django.urls import reverse
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 
 from student.forms import StudentAddForm, StudentEditForm
 from student.models import Student
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 
 
 # Create your views here.
@@ -92,22 +90,38 @@ class StudentListView(ListView):
     context_object_name = 'students_list'
 
     def get_queryset(self):
+        request = self.request
         qs = super().get_queryset()
         qs = qs.select_related('Student_group')
+        qs = qs.order_by('-id')
+
+        if request.GET.get('fname'):
+            qs = qs.filter(Student_first_name=request.GET.get('fname'))
+        if request.GET.get('lname'):
+            qs = qs.filter(Student_second_name=request.GET.get('lname'))
+
         return qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=None, **kwargs)
         context['title'] = 'Student list'
-        return  context
+        return context
+
 
 class StudentUpdateView(UpdateView):
     model = Student
     template_name = 'students_edit.html'
     form_class = StudentEditForm
+    # context_object_name = 'students'
 
     def get_success_url(self):
         return reverse('students:list')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Student edit'
+        return context
+
 
 class StudentCreateView(CreateView):
     model = Student
@@ -116,6 +130,7 @@ class StudentCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('students:list')
+
 
 class StudentDeleteView(DeleteView):
     model = Student

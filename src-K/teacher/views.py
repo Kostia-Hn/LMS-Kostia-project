@@ -1,11 +1,9 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
+from django.http import HttpResponse
 from django.urls import reverse
 from django.views.generic import ListView, UpdateView, CreateView
 
 from teacher.forms import TeacherAddForm, TeacherEditForm
 from teacher.models import Teacher
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 
 
 # Create your views here.
@@ -70,6 +68,7 @@ def generate_teachers(request):
 #                   'teachers': teacher})
 #
 
+
 class TeacherListView(ListView):
     model = Teacher
     template_name = 'teachers_list.html'
@@ -80,13 +79,26 @@ class TeacherListView(ListView):
         context['title'] = 'Teachers list'
         return context
 
+    def get_queryset(self):
+        request = self.request
+        qs = super().get_queryset()
+
+        if request.GET.get('fname'):
+            qs = qs.filter(Teacher_first_name=request.GET.get('fname'))
+        if request.GET.get('lname'):
+            qs = qs.filter(Teacher_second_name=request.GET.get('lname'))
+        return qs
+
+
 class TeacherUpdateView(UpdateView):
     model = Teacher
     template_name = 'teachers_edit.html'
     form_class = TeacherEditForm
+    context_object_name = 'groups'
 
     def get_success_url(self):
         return reverse('teachers:list')
+
 
 class TeacherCreateView(CreateView):
     model = Teacher

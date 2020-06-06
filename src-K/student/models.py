@@ -10,7 +10,7 @@ from Group.models import Groups
 class Student(models.Model):
     Student_first_name = models.CharField(max_length=40, null=False)
     Student_second_name = models.CharField(max_length=20, null=False)
-    Student_email = models.EmailField(max_length=20, null=True)
+    Student_email = models.EmailField(max_length=40, null=True)
     Student_birthday = models.DateField(default=datetime.date.today)
     Student_phone_number = models.CharField(max_length=16, null=True)
     Student_group = models.ForeignKey(to=Groups,

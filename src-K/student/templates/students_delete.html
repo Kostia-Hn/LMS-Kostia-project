@@ -3,10 +3,10 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <p>
+        <h3>
             Are you sure? Delete <b> {{student.Student_first_name}} {{student.Student_second_name}} </b>?
-        </p>
-        <button type="submit">Delete</button>
-        <a href="{% url 'students:list'%}" >Cancel</a>
+        </h3>
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'students:list'%}" class="btn btn-light">Cancel</a>
     </form>
 {% endblock %}

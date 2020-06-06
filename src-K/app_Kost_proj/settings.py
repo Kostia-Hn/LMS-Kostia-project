@@ -38,10 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'teacher',
     'django_extensions',
+    'crispy_forms',
+
+    'teacher',
     'student',
-    'Group'
+    'Group',
+    'user_account',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +62,7 @@ ROOT_URLCONF = 'app_Kost_proj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,3 +148,5 @@ LOGGING = {
         }
     }
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

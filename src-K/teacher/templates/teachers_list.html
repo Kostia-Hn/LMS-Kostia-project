@@ -2,23 +2,43 @@
 
 {% block content %}
 
-    <form>
-      <label for="fname">First name:</label><br>
-      <input type="text" id="fname" name="fname"><br>
-      <label for="lname">Last name:</label><br>
-      <input type="text" id="lname" name="lname">
-        <button type="submit">Search</button>
-    </form>
+<!--    <form>-->
+<!--      <label for="fname">First name:</label><br>-->
+<!--      <input type="text" id="fname" name="fname"><br>-->
+<!--      <label for="lname">Last name:</label><br>-->
+<!--      <input type="text" id="lname" name="lname">-->
+<!--        <button type="submit">Search</button>-->
+<!--    </form>-->
 
-    {% for Teacher in teachers_list %}
-            {{Teacher.id}}
-            <a href="/teachers/edit/{{Teacher.id}}">{{Teacher.Teacher_first_name}} {{Teacher.Teacher_second_name}}</a>
-            {{Teacher.Teacher_email}}
-            {{Teacher.Teacher_birthday}}
-            {{Teacher.Teacher_phone_number}}
-            <br>
-        {%empty%}
-           <p>Sorry, list is empty</p>
-        {% endfor%}
+<!--    {% for Teacher in teachers_list %}-->
+<!--            {{Teacher.id}}-->
+<!--            <a href="/teachers/edit/{{Teacher.id}}">{{Teacher.Teacher_first_name}} {{Teacher.Teacher_second_name}}</a>-->
+<!--            {{Teacher.Teacher_email}}-->
+<!--            {{Teacher.Teacher_birthday}}-->
+<!--            {{Teacher.Teacher_phone_number}}-->
+<!--            <br>-->
+<!--        {%empty%}-->
+<!--           <p>Sorry, list is empty</p>-->
+<!--        {% endfor%}-->
+
+
+<form>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">First name</span>
+        </div>
+        <input name="fname" type="text" class="form-control" placeholder="First name" aria-label="firstname" aria-describedby="basic-addon1">
+
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Last name</span>
+        </div>
+        <input name="lname" type="text" class="form-control" placeholder="Last name" aria-label="lastname" aria-describedby="basic-addon1">
+        <button type="submit" class="btn btn-success">Search</button>
+    </div>
+
+</form>
+
+    {% include 'includes/teach_table.html' %}
 
 {% endblock%}
