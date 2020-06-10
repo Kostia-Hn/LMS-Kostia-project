@@ -20,7 +20,6 @@ class Teacher(models.Model):
             f'{self.Teacher_phone_number}, ' \
             f'{self.Teacher_birthday}'
 
-
     @classmethod
     def generate_teacher(cls, group=None):
         a = '+'

@@ -1,16 +1,13 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+
 {%block content%}
     <form method="post">
         {% csrf_token %}
 
         {{form|crispy}}
 
-    <button type="submit">Save</button>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <a href="{% url 'index'%}" class="btn btn-danger">Cancel</a>
     </form>
-
-    {% with groups_list=teachers.groups.all %}
-        {% include 'groups_includes/groups_table.html' %}
-    {% endwith %}
-
 {%endblock%}

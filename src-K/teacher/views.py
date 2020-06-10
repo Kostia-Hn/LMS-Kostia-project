@@ -1,11 +1,10 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
-from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView
 
 from teacher.forms import TeacherAddForm, TeacherEditForm
 from teacher.models import Teacher
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 
 
 # Create your views here.
@@ -70,28 +69,46 @@ def generate_teachers(request):
 #                   'teachers': teacher})
 #
 
-class TeacherListView(ListView):
+
+class TeacherListView(LoginRequiredMixin, ListView):
     model = Teacher
     template_name = 'teachers_list.html'
     context_object_name = 'teachers_list'
+    login_url = reverse_lazy('login')
+    paginate_by = 20
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=None, **kwargs)
         context['title'] = 'Teachers list'
         return context
 
-class TeacherUpdateView(UpdateView):
+    def get_queryset(self):
+        request = self.request
+        qs = super().get_queryset()
+
+        if request.GET.get('fname'):
+            qs = qs.filter(Teacher_first_name=request.GET.get('fname'))
+        if request.GET.get('lname'):
+            qs = qs.filter(Teacher_second_name=request.GET.get('lname'))
+        return qs
+
+
+class TeacherUpdateView(LoginRequiredMixin, UpdateView):
     model = Teacher
     template_name = 'teachers_edit.html'
     form_class = TeacherEditForm
+    context_object_name = 'teachers'
+    login_url = reverse_lazy('login')
 
     def get_success_url(self):
         return reverse('teachers:list')
 
-class TeacherCreateView(CreateView):
+
+class TeacherCreateView(LoginRequiredMixin, CreateView):
     model = Teacher
     template_name = 'students_add.html'
     form_class = TeacherAddForm
+    login_url = reverse_lazy('login')
 
     def get_success_url(self):
         return reverse('teachers:list')

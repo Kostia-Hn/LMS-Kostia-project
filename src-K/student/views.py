@@ -1,11 +1,10 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
-from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 
 from student.forms import StudentAddForm, StudentEditForm
 from student.models import Student
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 
 
 # Create your views here.
@@ -86,40 +85,62 @@ def generate_students(request):
 #     return HttpResponse(f'Student {name} {sname} deleted')
 
 
-class StudentListView(ListView):
+class StudentListView(LoginRequiredMixin, ListView):
     model = Student
     template_name = 'students_list.html'
     context_object_name = 'students_list'
+    login_url = reverse_lazy('login')
+    paginate_by = 20
 
     def get_queryset(self):
+        request = self.request
         qs = super().get_queryset()
         qs = qs.select_related('Student_group')
+        qs = qs.order_by('-id')
+
+        if request.GET.get('fname'):
+            qs = qs.filter(Student_first_name=request.GET.get('fname'))
+        if request.GET.get('lname'):
+            qs = qs.filter(Student_second_name=request.GET.get('lname'))
+
         return qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=None, **kwargs)
         context['title'] = 'Student list'
-        return  context
+        return context
 
-class StudentUpdateView(UpdateView):
+
+class StudentUpdateView(LoginRequiredMixin, UpdateView):
     model = Student
     template_name = 'students_edit.html'
     form_class = StudentEditForm
+    # context_object_name = 'students'
+    login_url = reverse_lazy('login')
 
     def get_success_url(self):
         return reverse('students:list')
 
-class StudentCreateView(CreateView):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Student edit'
+        return context
+
+
+class StudentCreateView(LoginRequiredMixin, CreateView):
     model = Student
     template_name = 'students_add.html'
     form_class = StudentAddForm
+    login_url = reverse_lazy('login')
 
     def get_success_url(self):
         return reverse('students:list')
 
-class StudentDeleteView(DeleteView):
+
+class StudentDeleteView(LoginRequiredMixin, DeleteView):
     model = Student
     template_name = 'students_delete.html'
+    login_url = reverse_lazy('login')
 
     def get_success_url(self):
         return reverse('students:list')

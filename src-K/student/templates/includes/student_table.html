@@ -1,32 +1,51 @@
 
 {% if students_list %}
-    <table border="1px">
-        <tr>
-          <th>ID</th>
-          <th>First name</th>
-          <th>Last name</th>
-          <th>Email</th>
-          <th>Group</th>
 
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+        {% endif %}
 
-          <th>🖉</th>
-          <th>🗑</th>
+        <li class="page-item"><a class="page-link" href="">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages}}</a></li>
 
-        </tr>
-        {% for Student in students_list %}
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+        {% endif %}
+    </ul>
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
             <tr>
-              <td> {{ Student.id }}</td>
-              <td> {{ Student.Student_first_name }}</td>
-              <td> {{ Student.Student_second_name }}</td>
-              <td> {{ Student.Student_email }}</td>
-              <td> {{ Student.Student_group }}</td>
+              <th>ID</th>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Email</th>
+              <th>Group</th>
 
-              <td> <a href="/students/edit/{{ Student.id }}">EDIT</a></td>
-              <td> <a href="/students/delete/{{ Student.id }}">DELETE</a></td>
+
+              <th>🖉</th>
+              <th>🗑</th>
 
             </tr>
+        </thead>
+
+            {% for Student in students_list %}
+                <tr>
+                  <td> {{ Student.id }}</td>
+                  <td> {{ Student.Student_first_name }}</td>
+                  <td> {{ Student.Student_second_name }}</td>
+                  <td> {{ Student.Student_email }}</td>
+                  <td> {{ Student.Student_group }}</td>
+
+                  <td> <a href="/students/edit/{{ Student.id }}">EDIT</a></td>
+                  <td> <a href="/students/delete/{{ Student.id }}">DELETE</a></td>
+
+                </tr>
         {% endfor %}
     </table>
 {% else %}
     <p>Sorry, list is empty</p>
 {% endif %}
+

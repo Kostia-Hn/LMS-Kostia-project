@@ -1,5 +1,5 @@
+{% if teachers_list %}
 
-{% if groups_list %}
     <ul class="pagination">
         {% if page_obj.has_previous %}
             <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
@@ -15,31 +15,35 @@
     </ul>
 
     <table class="table table-hover">
-        <tr>
-          <th>ID</th>
-          <th>Specialization</th>
-          <th>Size</th>
-          <th>Classroom</th>
-          <th>Teacher</th>
-
-
-          <th>🖉</th>
-        </tr>
-        {% for Groups in groups_list %}
+        <thead class="thead-dark">
             <tr>
-              <td> {{ Groups.id }}</td>
-              <td> {{ Groups.Group_specialization }}</td>
-              <td> {{ Groups.Group_size }}</td>
-              <td> {{ Groups.classroom }}</td>
-              <td> {{ Groups.Group_teacher }}</td>
+              <th>ID</th>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Email</th>
+              <th>Birthday</th>
+              <th>Phone number</th>
 
-              <td> <a href="/groups/edit/{{ Groups.id }}">EDIT</a></td>
+              <th>🖉</th>
+
 
             </tr>
+        </thead>
+
+            {% for Teacher in teachers_list %}
+                <tr>
+                  <td> {{ Teacher.id }}</td>
+                  <td> {{ Teacher.Teacher_first_name }}</td>
+                  <td> {{ Teacher.Teacher_second_name }}</td>
+                  <td> {{ Teacher.Teacher_email }}</td>
+                  <td> {{ Teacher.Teacher_birthday }}</td>
+                  <td> {{ Teacher.Teacher_phone_number }}</td>
+
+                  <td> <a href="/teachers/edit/{{ Teacher.id }}">EDIT</a></td>
+
+                </tr>
         {% endfor %}
     </table>
 {% else %}
-    <p>Sorry, the list is empty</p>
+    <p>Sorry, list is empty</p>
 {% endif %}
-
-

@@ -20,7 +20,9 @@ class Classroom(models.Model):
         clsroom.save()
         return clsroom
 
+
 IT_list = ['Python', 'Java', 'JS', 'SQL', 'C++', 'C#']
+
 
 class Groups(models.Model):
     Group_specialization = models.CharField(max_length=10, null=True)
@@ -28,11 +30,11 @@ class Groups(models.Model):
     Group_creation_date = models.DateField(default=datetime.datetime.now().date())
     classroom = models.ManyToManyField(to=Classroom,
                                        null=True,
-                                       related_name='groups')
+                                       related_name='classroom')
     Group_teacher = models.ForeignKey(to=Teacher,
-                      null=True,
-                      on_delete=models.SET_NULL,
-                      related_name='groups')
+                                      null=True,
+                                      on_delete=models.SET_NULL,
+                                      related_name='groups')
 
     def __str__(self):
         return f'{self.id},' \
@@ -46,6 +48,6 @@ class Groups(models.Model):
 
         grp = cls(Group_specialization=IT_list[random.randrange(0, 5, 1)],
                   Group_size=random.randrange(15, 25, 1),
-                  Group_teacher = random.choice(teacher))
+                  Group_teacher=random.choice(teacher))
         grp.save()
         return grp

@@ -2,9 +2,14 @@
 
 {% block content %}
     <form>
-      <label for="fname">Group specialization:</label><br>
-      <input type="text" id="fname" name="fname"><br>
-        <button type="submit">Search</button>
+      <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Group specialization</span>
+            </div>
+
+            <input name="G-spec" type="text" class="form-control" placeholder="type here..." aria-label="G-spec" aria-describedby="basic-addon1">
+            <button type="submit" class="btn btn-success">Search</button>
+        </div>
     </form>
 
     {% include 'groups_includes/groups_table.html' %}
