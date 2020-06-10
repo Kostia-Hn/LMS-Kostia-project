@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView
 
 from teacher.forms import TeacherAddForm, TeacherEditForm
@@ -69,10 +70,12 @@ def generate_teachers(request):
 #
 
 
-class TeacherListView(ListView):
+class TeacherListView(LoginRequiredMixin, ListView):
     model = Teacher
     template_name = 'teachers_list.html'
     context_object_name = 'teachers_list'
+    login_url = reverse_lazy('login')
+    paginate_by = 20
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=None, **kwargs)
@@ -90,20 +93,22 @@ class TeacherListView(ListView):
         return qs
 
 
-class TeacherUpdateView(UpdateView):
+class TeacherUpdateView(LoginRequiredMixin, UpdateView):
     model = Teacher
     template_name = 'teachers_edit.html'
     form_class = TeacherEditForm
-    context_object_name = 'groups'
+    context_object_name = 'teachers'
+    login_url = reverse_lazy('login')
 
     def get_success_url(self):
         return reverse('teachers:list')
 
 
-class TeacherCreateView(CreateView):
+class TeacherCreateView(LoginRequiredMixin, CreateView):
     model = Teacher
     template_name = 'students_add.html'
     form_class = TeacherAddForm
+    login_url = reverse_lazy('login')
 
     def get_success_url(self):
         return reverse('teachers:list')

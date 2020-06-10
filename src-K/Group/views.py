@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, UpdateView
 
 from Group.forms import GroupEditForm
@@ -53,10 +54,12 @@ def generate_groups(request):
 #                   'group': grp})
 
 
-class GroupsListView(ListView):
+class GroupsListView(LoginRequiredMixin, ListView):
     model = Groups
     template_name = 'groups_list.html'
     context_object_name = 'groups_list'
+    login_url = reverse_lazy('login')
+    paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=None, **kwargs)
@@ -72,11 +75,12 @@ class GroupsListView(ListView):
         return qs
 
 
-class GroupsUpdateView(UpdateView):
+class GroupsUpdateView(LoginRequiredMixin, UpdateView):
     model = Groups
     template_name = 'groups_edit.html'
     form_class = GroupEditForm
     context_object_name = 'group'
+    login_url = reverse_lazy('login')
 
     def get_success_url(self):
         return reverse('groups:list')
