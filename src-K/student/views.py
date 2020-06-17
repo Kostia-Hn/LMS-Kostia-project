@@ -1,5 +1,6 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 
@@ -119,6 +120,7 @@ class StudentUpdateView(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('login')
 
     def get_success_url(self):
+        messages.add_message(self.request, messages.INFO, 'Student info was updated')
         return reverse('students:list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -143,4 +145,5 @@ class StudentDeleteView(LoginRequiredMixin, DeleteView):
     login_url = reverse_lazy('login')
 
     def get_success_url(self):
+        messages.add_message(self.request, messages.INFO, 'Student was deleted')
         return reverse('students:list')

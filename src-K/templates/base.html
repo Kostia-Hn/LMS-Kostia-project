@@ -35,6 +35,11 @@
 
             <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
+                    <div class="media">
+                        <div class="img-circle.vert">
+                            <img class="rounded-circle p-1 m-1" width="40" height="50" src="{{ user.profile.image.url }}">
+                        </div>
+                    </div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'profile'%}">Profile </a>
                     </li>
@@ -60,6 +65,14 @@
 
         </div>
     </nav>
+
+    {% if messages %}
+        <div class="alert alert-primary" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <h3 class="p-4">{{title}}</h3>
     <p></p>
